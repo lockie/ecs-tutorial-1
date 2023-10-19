@@ -1,0 +1,30 @@
+* ECS Tutorial 1
+
+** Installation
+
+Just grab the executables from Releases section.
+
+** System requirements
+
++ Windows 7 SP1 or Ubuntu 16.04
++ 2 GB of RAM
++ 40 Mb of free disk space
+
+** Author
+
++ Andrew Kravchuk (awkravchuk@gmail.com)
+
+** Credits
+
++ [[https://fonts.google.com/specimen/Inconsolata/about][Inconsolata font]]
++ [[http://tango.freedesktop.org][Tango icons]]
++ [[https://opengameart.org/content/asteroids][Asteroids]]
++ [[https://opengameart.org/content/space-background-3][Space Background]]
+
+** Copyright
+
+Copyright (c) 2023 Andrew Kravchuk (awkravchuk@gmail.com)
+
+** License
+
+Licensed under the MIT License.

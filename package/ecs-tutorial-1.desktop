@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=ECS Tutorial 1
+Exec=ecs-tutorial-1
+Terminal=false
+Categories=Game;
+Icon=icon
