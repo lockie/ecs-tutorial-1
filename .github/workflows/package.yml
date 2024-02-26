@@ -14,8 +14,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Setup
-        run: ln -s `pwd` /root/quicklisp/local-projects/
       - name: Build package
         run: ./package.sh linux
       - name: Archive package
@@ -23,6 +21,30 @@ jobs:
         with:
           name: linux
           path: '*.AppImage'
+          if-no-files-found: error
+  build-macos:
+    runs-on: macos-12
+    steps:
+      - name: Install macports
+        run: |
+         wget -q https://github.com/macports/macports-base/releases/download/v2.9.1/MacPorts-2.9.1-12-Monterey.pkg -P /tmp
+         sudo installer -pkg /tmp/MacPorts-2.9.1-12-Monterey.pkg -target /
+         echo "/opt/local/bin" >> $GITHUB_PATH
+      - name: Install prerequisites
+        run: sudo /opt/local/bin/port -N install sbcl pkgconfig libffi dylibbundler allegro5
+      - name: Install Quicklisp
+        run: |
+          wget -q https://beta.quicklisp.org/quicklisp.lisp -P /tmp
+          HOME=/Users/runner sbcl --non-interactive --load /tmp/quicklisp.lisp --eval '(quicklisp-quickstart:install :dist-version nil :client-version nil)' --eval '(ql-util:without-prompting (ql:add-to-init-file))'  --eval '(ql-dist:install-dist "http://dist.ultralisp.org/" :prompt nil)' --eval '(setf (ql-dist:preference (ql-dist:find-dist "ultralisp")) 0)' --eval '(ql-dist:install-dist "http://dist.luckylambda.technology/releases/lucky-lambda.txt" :prompt nil)'
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Build package
+        run: HOME=/Users/runner DYLD_FALLBACK_LIBRARY_PATH=/opt/local/lib PKG_CONFIG_PATH=/opt/local/lib/pkgconfig ./package.sh macos
+      - name: Archive package
+        uses: actions/upload-artifact@v3
+        with:
+          name: macos
+          path: '*.dmg'
           if-no-files-found: error
   build-windows:
     runs-on: ubuntu-latest
@@ -32,11 +54,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Setup
-        run: ln -s `pwd` /root/.wine/drive_c/users/root/quicklisp/local-projects/
       - name: Build package
         # NOTE: Github actions fuck up Docker's ENTRYPOINT, hence this atrocity
-        run: set +e; cd /opt/quasi-msys2/env; . /opt/quasi-msys2/env/all.src; cd -; WINEPATH="Z:/ucrt64/bin;C:\Program Files (x86)\NSIS" PKG_CONFIG_PATH="Z:/ucrt64/lib/pkgconfig" wine busybox sh ./package.sh windows
+        run: set +e; cd /opt/quasi-msys2/env; . /opt/quasi-msys2/env/all.src; cd -; WINEPATH="Z:/ucrt64/bin;C:/Program Files (x86)/NSIS" PKG_CONFIG_PATH="Z:/ucrt64/lib/pkgconfig" CC=gcc-wrapper wine busybox sh -c 'export HOME="C:/users/root"; ./package.sh windows'
       - name: Archive package
         uses: actions/upload-artifact@v3
         with:
@@ -45,14 +65,14 @@ jobs:
           if-no-files-found: error
   release:
     runs-on: ubuntu-latest
-    needs: [build-linux, build-windows]
+    needs: [build-linux, build-macos, build-windows]
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "linux/*.AppImage,windows/*.exe"
+          artifacts: "linux/*.AppImage,macos/*.dmg,windows/*.exe"
           omitBody: true
           allowUpdates: true
           artifactErrorsFailBuild: true

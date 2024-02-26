@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleDisplayName</key>
+    <string>ECS Tutorial 1</string>
+    <key>CFBundleVersion</key>
+    <string>0.0.1</string>
+    <key>CFBundleExecutable</key>
+    <string>ecs-tutorial-1</string>
+    <key>CFBundleIconFile</key>
+    <string>icon.png</string>
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright © 2024 Andrew Kravchuk</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+  </dict>
+</plist>
