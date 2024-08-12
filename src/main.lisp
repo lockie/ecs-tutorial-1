@@ -5,12 +5,19 @@
 
 (define-constant +repl-update-interval+ 0.3d0)
 
-(define-constant +font-path+ "../Resources/inconsolata.ttf"
-  :test #'string=)
+(defvar *resources-path*
+  (asdf:system-relative-pathname :ecs-tutorial-1 #P"Resources/"))
+
+(deploy:define-hook (:boot set-resources-path) ()
+  (setf *resources-path*
+        (merge-pathnames #P"Resources/"
+                         (uiop:pathname-parent-directory-pathname
+                          (deploy:runtime-directory)))))
+
+(define-constant +font-path+ "inconsolata.ttf" :test #'string=)
 (define-constant +font-size+ 24)
 
-(define-constant +config-path+ "../config.cfg"
-  :test #'string=)
+(define-constant +config-path+ "../config.cfg" :test #'string=)
 
 (ecs:define-component position
   "Determines the location of the object, in pixels."
@@ -186,6 +193,7 @@
                           (with-output-to-string (s)
                             (uiop:print-condition-backtrace e :stream s))
                           (cffi:null-pointer) :error)))))
+    (uiop:chdir *resources-path*)
     (al:set-app-name "ecs-tutorial-1")
     (unless (al:init)
       (error "Initializing liballegro failed"))

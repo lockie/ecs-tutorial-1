@@ -23,7 +23,7 @@ Just grab the executables from Releases section.
 
 ** Copyright
 
-Copyright (c) 2023 Andrew Kravchuk (awkravchuk@gmail.com)
+Copyright (c) 2023–2024 Andrew Kravchuk (awkravchuk@gmail.com)
 
 ** License
 
