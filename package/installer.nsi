@@ -1,8 +1,5 @@
 !include MUI2.nsh
 
-!system 'convert icon.png -define icon:auto-resize=16,32,48,64,256 %TEMP%/icon.ico'
-!system 'convert -resize 150x57 -extent 150x57 -gravity center -background white -alpha remove -alpha off icon.png BMP2:%TEMP%/icon.bmp'
-
 !define MUI_PRODUCT "ECS Tutorial 1"
 !define MUI_FILE "ecs-tutorial-1"
 !define MUI_VERSION $%VERSION%
