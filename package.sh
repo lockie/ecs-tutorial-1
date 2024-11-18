@@ -16,10 +16,11 @@ function do_build () {
 case $1 in
     linux)
         do_build
-        linuxdeploy --appimage-extract-and-run --executable=bin/ecs-tutorial-1 \
+        DEPLOY_GTK_VERSION=3 linuxdeploy --appimage-extract-and-run --executable=bin/ecs-tutorial-1 \
                     --custom-apprun=package/AppRun \
                     --icon-file=package/icon.png \
                     --desktop-file=package/ecs-tutorial-1.desktop \
+                    --plugin gtk \
                     --appdir=appimage $(find bin -name "lib*" -printf "-l%p ")
         cp bin/ecs-tutorial-1 appimage/usr/bin
         cp -R Resources appimage/usr
