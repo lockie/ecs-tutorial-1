@@ -24,7 +24,7 @@ case $1 in
                     --appdir=appimage $(find bin -name "lib*" -printf "-l%p ")
         cp bin/ecs-tutorial-1 appimage/usr/bin
         cp -R Resources appimage/usr
-        appimagetool --appimage-extract-and-run --comp xz -g appimage "ecs-tutorial-1-${VERSION}.AppImage"
+        appimagetool --appimage-extract-and-run --comp zstd -g appimage "ecs-tutorial-1-${VERSION}.AppImage"
         ;;
 
     windows)
