@@ -122,7 +122,7 @@
   :test #'equalp)
 
 (defun init ()
-  (ecs:bind-storage)
+  (ecs:make-storage)
   (let ((background-bitmap-1 (al:ensure-loaded
                               #'al:load-bitmap
                               "../Resources/parallax-space-stars.png"))
