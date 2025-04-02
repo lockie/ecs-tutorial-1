@@ -17,21 +17,21 @@ jobs:
       - name: Build package
         run: ./package.sh linux
       - name: Archive package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linux
           path: '*.AppImage'
           if-no-files-found: error
   build-macos:
-    runs-on: macos-12
+    runs-on: macos-14
     steps:
       - name: Install macports
         run: |
-         wget -q https://github.com/macports/macports-base/releases/download/v2.9.1/MacPorts-2.9.1-12-Monterey.pkg -P /tmp
-         sudo installer -pkg /tmp/MacPorts-2.9.1-12-Monterey.pkg -target /
+         wget -q https://github.com/macports/macports-base/releases/download/v2.10.5/MacPorts-2.10.5-14-Sonoma.pkg -P /tmp
+         sudo installer -pkg /tmp/MacPorts-2.10.5-14-Sonoma.pkg -target /
          echo "/opt/local/bin" >> $GITHUB_PATH
       - name: Install prerequisites
-        run: sudo /opt/local/bin/port -N install sbcl pkgconfig libffi dylibbundler allegro5
+        run: sudo /opt/local/bin/port -Nb install sbcl pkgconfig libffi dylibbundler allegro5
       - name: Install Quicklisp
         run: |
           wget -q https://beta.quicklisp.org/quicklisp.lisp -P /tmp
@@ -41,7 +41,7 @@ jobs:
       - name: Build package
         run: HOME=/Users/runner DYLD_FALLBACK_LIBRARY_PATH=/opt/local/lib PKG_CONFIG_PATH=/opt/local/lib/pkgconfig ./package.sh macos
       - name: Archive package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: macos
           path: '*.dmg'
@@ -57,7 +57,7 @@ jobs:
       - name: Build package
         run: msys2 -c "./package.sh windows"
       - name: Archive package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: windows
           path: '*.exe'
@@ -67,7 +67,7 @@ jobs:
     needs: [build-linux, build-macos, build-windows]
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
       - name: Release
         uses: ncipollo/release-action@v1
         with:
